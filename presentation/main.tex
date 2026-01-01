@@ -3,7 +3,7 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
-\usetheme{SimplePlus}
+%\usetheme{SimplePlus}
 \usepackage{caption}
 \usepackage{biblatex}
 \addbibresource{references.bib} 
@@ -15,6 +15,7 @@
 \usepackage{amsthm} % Allows the use of theorem environments
 \usepackage{amssymb} % Allows the use of additional mathematical symbols
 \usepackage{multicol} % Allows the use of multiple columns in a slide
+
 %----------------------------------------------------------------------------------------
 %    TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -22,7 +23,7 @@
 \title{On the Exact Separation of \\ Mixed Integer Knapsack Cuts}
 
 \author{
-Guillem Audeber, 
+Guillem Audebert, 
 Léonard Bultinck,
 Tudor Cardas,
 Yağmur Ergin}
@@ -72,16 +73,44 @@ Yağmur Ergin}
 \section{Solving the Mixed Integer Knapsack Problem}
 %------------------------------------------------
 
-\subsection{A}
-\begin{frame}{1}
-    \begin{itemize}
-        \item a
-        \item b
-    \end{itemize}
+
+%%%%%%%%%%%%%%% Guillem
+
+\subsection{Reducing the problem}
+\begin{frame}{Reducing $LP_1$}
+
+	\begin{itemize}
+		\item $LP_1$ encodes knapsack cut. 
+		\item Constraint $ \pi x^k - \pi_0 \leq 0 \; , \forall x^k$ being an extreme point $\text{conv}(K)$.
+		\item $\implies $ exponential number of rows.
+		\item Note that the straightforward dynamic cut generation algorithm that repeatedly optimizes over a
+		relaxation of L P 1 and adds a violated cut (C1) or (C2) to the relaxation is prohibitively slow.We present some solutions
+	\end{itemize}
+
+    
 \end{frame}
 
+\begin{frame}{Reducing Dimension}
+	\begin{itemize}
+		\item computing $x^* \in \text{conv}(K) $?
+		\item Fix variable that are already at bounds. 
+		\item Lowers $LP_1$ dimension, reduces the size of integer knapsack oracle.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Eliminate variables \& Tighten $LP_1$}
+	\begin{itemize}
+		\item Eliminate irrelevant variable 
+		\item Restrict $\pi$-space.
+		\item Fewer rows needed, smaller MIKP oracle, faster convergence.
+	\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{B}
-\begin{frame}{2}
+\begin{frame}{1}
     \begin{itemize}
         \item a
         \item b
