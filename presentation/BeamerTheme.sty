@@ -1,0 +1,306 @@
+
+\NeedsTeXFormat{LaTeX2e}%
+\ProvidesPackage{BeamerTheme}[BeamerTheme]
+
+%% packages
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{etoolbox}
+\usetikzlibrary{calc}
+ 
+%% options
+\DeclareOptionBeamer{titlepage}[auto]{\def\personnal@options@titlepage{#1}}
+\DeclareOptionBeamer{toc}[fancy]{\def\personnal@options@toc{#1}}
+\DeclareOptionBeamer{headline}[fancy]{\def\personnal@options@headline{#1}}
+\DeclareOptionBeamer{footline}[fancy]{\def\personnal@options@footline{#1}}
+\DeclareOptionBeamer{progressbar}[no]{\def\personnal@options@progressbar{#1}}
+\DeclareOptionBeamer{itemshape}[ball]{\def\personnal@options@itemshape{#1}}
+\DeclareOptionBeamer{colorstyle}[fancy]{\def\personnal@options@colorstyle{#1}}
+\DeclareOptionBeamer{framecount}[fancy]{\def\personnal@options@framecount{#1}}
+
+\DeclareOptionBeamer{none}{  \ExecuteOptionsBeamer{titlepage=auto, toc=none,   headline=none,   footline=none,   colorstyle=plain,  framecount=none, progressbar=no}}%
+\DeclareOptionBeamer{plain}{ \ExecuteOptionsBeamer{titlepage=auto, toc=plain,  headline=plain,  footline=plain,  colorstyle=plain,  framecount=plain, progressbar=no}}%
+\DeclareOptionBeamer{simple}{\ExecuteOptionsBeamer{titlepage=auto, toc=simple, headline=simple, footline=simple, colorstyle=simple, framecount=simple, progressbar=no}}%
+\DeclareOptionBeamer{fancy}{ \ExecuteOptionsBeamer{titlepage=auto, toc=fancy,  headline=fancy,  footline=fancy,  colorstyle=fancy,  framecount=fancy, progressbar=no}}%
+
+\ExecuteOptionsBeamer{fancy,itemshape=balls}
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+% aux variables
+\newcount\personnal@counta
+\newcount\personnal@countb
+\newdimen\personnal@dima
+\newdimen\personnal@dimb
+
+% margins
+\setbeamersize{text margin left=1cm,text margin right=1cm}
+
+%% ===========================
+%% Couleurs — centralisée (change UNE ligne pour changer la teinte principale)
+% Définit la couleur principale ici (une seule ligne à modifier)
+\definecolor{personnal@main}{HTML}{0B3D2E}
+%\definecolor{personnal@main}{HTML}{6e0b14} 
+
+% Couleurs derivées
+\colorlet{personnal@secondary}{personnal@main!65!black} % foncé/secondaire
+\colorlet{personnal@tertiary}{personnal@main!35!black}  % tertiaire plus clair
+
+
+
+
+\definecolor{personnal@deuxieme}{HTML}{b29c14}
+\definecolor{personnal@troisieme}{HTML}{F0F7EE}
+% appliquer au thème
+\setbeamercolor{structure}{fg=personnal@main}
+\setbeamercolor{normal text}{fg=black,bg=white}
+
+\setbeamercolor*{title in head/foot}{fg=personnal@secondary}
+\setbeamercolor*{author in head/foot}{fg=personnal@deuxieme}
+\setbeamercolor*{page number in head/foot}{fg=white}
+
+\setbeamercolor*{palette primary}{fg=personnal@main}
+\setbeamercolor*{palette secondary}{fg=personnal@secondary}
+\setbeamercolor*{palette tertiary}{fg=personnal@tertiary}
+\setbeamercolor*{palette quaternary}{fg=personnal@tertiary!60!black}
+
+%% helper : règle horizontale colorée (utilisée sur la page de titre)
+
+\newcommand{\personnal@rule}{%
+  \noindent
+  \hskip-\beamer@leftmargin
+  \color{personnal@deuxieme}%
+  \rule{\paperwidth}{2pt}%
+  \\
+  \noindent
+  \hskip-\beamer@leftmargin
+  \color{personnal@deuxieme}%
+  \rule{\paperwidth}{3pt}
+  \\
+  \noindent
+  \hskip-\beamer@leftmargin
+  \color{personnal@deuxieme}%
+  \rule{\paperwidth}{2pt}
+}
+
+%% ===========================
+%% Background : top/bottom bars + une ligne pêche sous le top (saumon retiré)
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % top bar (main)
+    \fill[personnal@main] (current page.north west) rectangle ++(\paperwidth,-0.95cm);
+    % decorative line under top bar (pêche only)
+    \draw[line width=1pt,draw=personnal@deuxieme] ($(current page.north west)+(0,-0.98cm)$) -- ++(\paperwidth,0);
+
+    % bottom bar (main)
+    \fill[personnal@main] (current page.south west) rectangle ++(\paperwidth,0.95cm);
+    % decorative lines above bottom bar (kept pêche + saumon)
+    \draw[line width=1pt,draw=personnal@deuxieme] ($(current page.south west)+(0,0.98cm)$) -- ++(\paperwidth,0);
+    \draw[line width=1pt,draw=personnal@troisieme] ($(current page.south west)+(0,1.20cm)$) -- ++(\paperwidth,0);
+  \end{tikzpicture}%
+}
+
+%% ===========================
+%% Title page (utilise \personnal@rule)
+\setbeamertemplate{title page}{
+  \setcounter{framenumber}{0}%
+  \begin{center}
+    \kern.15\paperheight%
+    \vbox to .5\paperheight{
+      \vfill%
+      {\Large\bfseries\usebeamercolor[fg]{title}\inserttitle}\par
+      {\large\itshape\usebeamercolor[fg]{subtitle}\insertsubtitle}\par
+      \vfill%
+      \personnal@rule
+      \vfill%
+      {\large\usebeamercolor[fg]{author}\insertauthor}\par%
+      {\tiny\usebeamercolor[fg]{institute}\insertinstitute}\par%
+      \vfill%
+      {\normalsize\usebeamercolor[fg]{date}\insertdate}%
+      \vfill%
+    }%
+  \end{center}
+}
+
+%% default config (items, blocks, etc.)
+\beamertemplatenavigationsymbolsempty
+\beamertemplateballitem
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\beamertemplatebookbibitems
+\setbeamertemplate{sections/subsections in toc}[\personnal@options@itemshape]
+\setbeamertemplate{sections/subsections in toc shaded}[default][40]
+
+\def\footnotesep{0mm}
+\setbeamerfont{footnote}{size=\tiny}
+
+\setbeamertemplate{itemize items}[\personnal@options@itemshape]
+\setbeamertemplate{enumerate items}[\personnal@options@itemshape]
+
+%% frametitle
+\setbeamertemplate{frametitle}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0mm,dp=0mm,right]{frametile}%
+    \bfseries\Large\insertframetitle\kern.039\paperwidth%
+  \end{beamercolorbox}%
+}
+\setbeamertemplate{frametitle continuation}{(\insertcontinuationcount)}
+
+%% headline : garde logique originale mais couleurs tirées des variables
+\def\personnal@tmpa{none}\ifx\personnal@options@headline\personnal@tmpa%
+  \setbeamertemplate{headline}{\kern.052\paperheight}%
+\else\def\personnal@tmpa{plain}\ifx\personnal@options@headline\personnal@tmpa%
+  \setbeamertemplate{headline}{%
+    \kern.047\paperheight%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0mm,dp=0mm]{section in head/foot}
+      \noindent\hfill\insertsectionnavigationhorizontal{.7\paperwidth}{}{}%
+    \end{beamercolorbox}%
+    \kern.039\paperheight%
+  }%
+\else\def\personnal@tmpa{fancy}\ifx\personnal@options@headline\personnal@tmpa%
+  \setbeamertemplate{headline}{%
+    \kern.047\paperheight%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0mm,dp=0mm]{section in head/foot}
+      \noindent\hfill\insertnavigation{.7\paperwidth}%
+    \end{beamercolorbox}%
+    \kern.039\paperheight%
+  }%
+\else
+  \setbeamertemplate{headline}{%
+    \kern.047\paperheight%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0mm,dp=0mm]{section in head/foot}
+      \noindent\hbox to .3\textwidth{\kern.039\paperwidth\usebeamercolor[fg]{author in head/foot}\insertshortauthor, \usebeamercolor[fg]{title in head/foot}\insertshorttitle}%
+      \hbox to .3\textwidth{\hfill\textbf{\insertsection}~|~}%
+      \insertsubsectionnavigationhorizontal{.4\textwidth}{}{\kern.039\paperwidth}%
+    \end{beamercolorbox}%
+    \kern.039\paperheight%
+  }%
+\fi\fi\fi
+
+%% ===========================
+%% Progressbar drawing (adapted)
+\def\personnal@progressbar#1{%
+	\personnal@dima=\paperwidth \advance\personnal@dima by -.026\paperwidth% largeur de la barre
+	\personnal@dimb=\personnal@dima%
+	
+	% Calcul de la progression, on ajuste la largeur en fonction du numéro de la frame
+	\ifnum\insertframenumber>\personnal@totalframenumber
+	\personnal@counta=\personnal@totalframenumber
+	\else
+	\personnal@counta=\insertframenumber
+	\fi
+	
+	\multiply\personnal@dimb by \personnal@counta
+	\personnal@counta=\personnal@totalframenumber
+	\divide\personnal@dimb by \personnal@counta
+	
+	% Centrage horizontal et dessin de la barre de progression
+	\hskip-\beamer@leftmargin % Compensation du décalage de la marge gauche de Beamer
+	\begin{tikzpicture}[baseline]
+		% Fond de la barre (vide) avec opacité
+		\draw[draw=white, draw opacity=0](0pt, 0pt) rectangle ++ (\personnal@dima, 2pt); % réduite à 2pt
+		% Couleur de la progression (fill opacity pour transparence)
+		\fill[personnal@deuxieme,fill opacity=0.25] (0pt, 0pt) rectangle ++ (\personnal@dima, 2pt); % fond gris léger
+		\fill[personnal@troisieme] (0pt, 0pt) rectangle ++ (\personnal@dimb, 2pt); % progression colorée
+	\end{tikzpicture}%
+	\kern-\personnal@dima
+}
+
+
+%% frame numbering
+\def\personnal@totalframenumber{\inserttotalframenumber}%
+\def\lastframe{%
+  \immediate\write\@auxout{\noexpand\gdef\noexpand\personnal@totalframenumber{\the\c@framenumber}}%
+  \def\personnal@tmpa{none}\ifx\personnal@options@framecount\personnal@tmpa%
+    \def\personnal@framenumber{}%
+  \else%
+    \def\personnal@framenumber{(\insertframenumber)}%
+  \fi%
+}%
+
+\def\personnal@tmpa{none}\ifx\personnal@options@framecount\personnal@tmpa%
+  \def\personnal@framenumber{}%
+\else\def\personnal@tmpa{plain}\ifx\personnal@options@framecount\personnal@tmpa%
+  \def\personnal@framenumber{\insertframenumber}%
+\else\def\personnal@tmpa{fancy}\ifx\personnal@options@framecount\personnal@tmpa%
+  \def\personnal@framenumber{\insertframenumber/\personnal@totalframenumber}%
+\else%
+  \def\personnal@framenumber{\insertframenumber/\personnal@totalframenumber}%
+\fi\fi\fi%
+
+%% ===========================
+%% Footline : TikZ overlay + centered minipage (texte rehaussé)
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west] at (current page.south west) {%
+      \begin{minipage}[c][0.95cm][c]{\paperwidth}%
+        \hspace*{1cm}\usebeamercolor[fg]{author in head/foot}\insertshortauthor%
+        \hfill%
+        \usebeamercolor[fg]{title in head/foot}\insertshorttitle%
+        \hfill%
+        \usebeamercolor[fg]{page number in head/foot}\personnal@framenumber%
+        \hspace*{1cm}%
+      \end{minipage}%
+    };
+    \def\personnal@tmpa{no}\ifx\personnal@options@progressbar\personnal@tmpa\else
+      \node[anchor=south west] at ($(current page.south west)+(1cm,0.14cm)$){\personnal@progressbar{.8}};
+    \fi
+  \end{tikzpicture}%
+}
+
+%% ===========================
+%% Automated behaviors: TITLEPAGE & TOC
+\def\personnal@tmpa{none}
+\ifx\personnal@options@titlepage\personnal@tmpa%
+\else%
+  \AtBeginDocument{%
+    \frame[t,plain]{\titlepage}%
+  }
+\fi%
+
+% ---------- IMPORTANT CHANGE ----------
+% AtBeginSection / AtBeginSubsection: simplified frames WITHOUT decorative rule
+% This removes the extra slide that showed \personnal@rule after each \section
+\def\personnal@tmpa{none}\ifx\personnal@options@toc\personnal@tmpa%
+\else\def\personnal@tmpa{plain}\ifx\personnal@options@toc\personnal@tmpa%
+  \AtBeginSection{\frame{\tableofcontents[sectionstyle=show/shaded,subsectionstyle=hide/hide/hide]}}
+\else\def\personnal@tmpa{fancy}\ifx\personnal@options@toc\personnal@tmpa%
+  \AtBeginSection{%
+    % simple frame with section title (no rule)
+    \frame{%
+      \begin{center}
+        \textbf{\LARGE\usebeamercolor[fg]{title}\thesection.~\insertsection}\par%
+      \end{center}
+      \vfill\par%
+      \tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]%
+    }%
+  }%
+  \AtBeginSubsection{%
+    \ifnum\thesubsection>1%
+      \frame{%
+        \begin{center}
+          \textbf{\LARGE\usebeamercolor[fg]{title}\thesection.~\insertsection}%
+        \end{center}
+        \vfill\par%
+        \tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]%
+      }%
+    \fi%
+  }%
+\else
+  \AtBeginSection{\frame{\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]}}
+\fi\fi\fi
+
+%% ===========================
+%% blocks colors harmonized with main
+\setbeamercolor{block title}{fg=white,bg=personnal@main}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=personnal@main!8!bg}
+
+\setbeamercolor{block title alerted}{fg=white,bg=personnal@troisieme}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=personnal@troisieme!10!bg}
+
+\setbeamercolor{block title example}{fg=white,bg=personnal@deuxieme}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=personnal@deuxieme!10!bg}
+
+\setbeamercolor*{footnote}{parent=palette secondary}
+
+\mode<all>
+\endinput

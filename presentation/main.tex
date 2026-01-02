@@ -3,7 +3,6 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
-%\usetheme{SimplePlus}
 \usepackage{caption}
 \usepackage{biblatex}
 \addbibresource{references.bib} 
@@ -16,6 +15,7 @@
 \usepackage{amssymb} % Allows the use of additional mathematical symbols
 \usepackage{multicol} % Allows the use of multiple columns in a slide
 
+\usepackage[progressbar=yes,framecount=fancy]{BeamerTheme}
 %----------------------------------------------------------------------------------------
 %    TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -33,11 +33,6 @@ Yağmur Ergin}
 %----------------------------------------------------------------------------------------
 
 \begin{document}
-
-\begin{frame}
-    % Print the title page as the first slide
-    \titlepage
-\end{frame}
 
 \begin{frame}{Overview}
     % Automatically generates a table of contents based on \section{} and \subsection{}
@@ -78,24 +73,26 @@ Yağmur Ergin}
 
 \subsection{Reducing the problem}
 \begin{frame}{Reducing $LP_1$}
-
-	\begin{itemize}
-		\item $LP_1$ encodes knapsack cut. 
-		\item Constraint $ \pi x^k - \pi_0 \leq 0 \; , \forall x^k$ being an extreme point $\text{conv}(K)$.
-		\item $\implies $ exponential number of rows.
-		\item Note that the straightforward dynamic cut generation algorithm that repeatedly optimizes over a
-		relaxation of L P 1 and adds a violated cut (C1) or (C2) to the relaxation is prohibitively slow.We present some solutions
-	\end{itemize}
-
+	
+	\begin{block}{$LP_1$ and knapsack cut}
+		\begin{itemize}
+			\item Constraint $ \pi x^k - \pi_0 \leq 0 \; , \forall x^k$ being an extreme point $\text{conv}(K)$.
+			\item $\implies $ exponential number of rows.
+			\item Note that the straightforward dynamic cut generation algorithm that repeatedly optimizes over a
+			relaxation of L P 1 and adds a violated cut (C1) or (C2) to the relaxation is prohibitively slow.We present some solutions
+		\end{itemize}
+	\end{block}
     
 \end{frame}
 
 \begin{frame}{Reducing Dimension}
-	\begin{itemize}
-		\item computing $x^* \in \text{conv}(K) $?
-		\item Fix variable that are already at bounds. 
-		\item Lowers $LP_1$ dimension, reduces the size of integer knapsack oracle.
-	\end{itemize}
+	\begin{block}{ computing $x^* \in \text{conv}(K) $?}
+		\begin{itemize}
+			\item Fix variable that are already at bounds. 
+			\item Lowers $LP_1$ dimension, reduces the size of integer knapsack oracle.
+		\end{itemize}
+	\end{block}
+	
 \end{frame}
 
 \begin{frame}{Eliminate variables \& Tighten $LP_1$}
