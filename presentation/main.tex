@@ -14,6 +14,8 @@
 \usepackage{amsthm} % Allows the use of theorem environments
 \usepackage{amssymb} % Allows the use of additional mathematical symbols
 \usepackage{multicol} % Allows the use of multiple columns in a slide
+\usepackage{algorithm} % For algorithm environment
+\usepackage{algpseudocode} % For algorithmic environment
 
 \usepackage[progressbar=yes,framecount=fancy]{BeamerTheme}
 %----------------------------------------------------------------------------------------
@@ -44,24 +46,70 @@ Yağmur Ergin}
 %------------------------------------------------
 
 \begin{frame}{Introduction}
-    % Add content for the introduction
+    \textbf{Mixed Integer Knapsack Set:} \\
+    \vspace{0.1cm}
+    Consider a positive integer $n$, $b \in \mathbb{Q}$, $a \in \mathbb{Q}^n$, $l \in \{\mathbb{Q} \cup \{-\infty\}\}^n$, $u \in \{\mathbb{Q} \cup \{+\infty\}\}^n$ and $I \subseteq N := \{1, \ldots, n\}$
+    \vspace{0.1cm}
+    \[
+    K = \{x \in \mathbb{R}^n : ax \leq b, l \leq x \leq u, x_i \in \mathbb{Z}, \forall i \in I \}
+    \]
+    Given a point $x^* \in \mathbb{Q}^n$
     \begin{itemize}
-        \item a
-        \item b
-        \item c
+        \item Identify an inequality ($\pi x \leq \pi_0$) valid for conv$(K)$ and violated by $x^*$.
+        \item Prove that no such inequality exists.
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Introduction}
+    \textbf{Mixed Integer Set :} \\
+    \[
+    P = \{x \in \mathbb{R}^n : Dx \leq d, l \leq x \leq u, x_i \in \mathbb{Z}, \forall i \in I \}
+    \]
+    \vspace{0.2cm}
+    where $D$ is an $m \times n$ matrix, and $d \in \mathbb{Q}^n$.\\
+    If $(a, b)$ can be obtained as a non-negative linear combination of rows from $(D, d)$, then $P \subseteq K$ 
+    and we say that $K$ is an implied knapsack set of $P$. 
+    % If this is the case, any inequality which is valid for $K$ will also be valid for $P$ and we 
+    % henceforth call it knapsack inequality or knapsack cut of $P$.
+\end{frame}
 %------------------------------------------------
-\section{Algorithm}
+\section{Identifying a Violated Knapsack Cut}
 %------------------------------------------------
+\begin{frame}{Is $x^* \in \text{conv}(K)$?}
+    \vspace{-0.4cm}
+    \textbf{Suggestion:} Solve the following linear program to solve the separation problem:
+    \vspace{-0.4cm}
+    \begin{align*}
+    LP_1 : \min \quad & \sum_{i=1}^{n} (u_i + v_i) \\
+    \text{s.t.} \quad & \pi x^k - \pi_0 \leq 0 & \forall k = 1, \ldots, q & \quad \text{(C1)} \\
+    & \pi r^k \leq 0 & \forall k = 1, \ldots, t & \quad \text{(C2)} \\
+    & \pi x^* - \pi_0 = 1 & & \quad \text{(C3)} \\
+    & \pi + u - v = 0 & & \quad \text{(C4)} \\
+    & u \geq 0, \; v \geq 0 & &
+    \end{align*}
+    \vspace{-0.1cm}
+    If $LP_1$ is infeasible, then $x^* \in \text{conv}(K)$.\\ 
+    Otherwise, the optimal solution $(u, v, \pi, \pi_0)$ gives a valid knapsack cut $\pi x \leq \pi_0$.
+\end{frame}
 
-\begin{frame}{A}
--    \begin{itemize}
-        \item a
-        \item b
-        \item c
-    \end{itemize}
+\begin{frame}{Algorithm}
+    \begin{algorithm}[H]
+    \caption{knapsack\_separator($K$, $x^*$)}
+    \small
+    \textbf{Input:} A MIK set $K$, and a vector $x^*$.\\
+    \textbf{Output:} If $x^* \in \text{conv}(K)$ : TRUE; Else : FALSE and a cut separating $x^*$ from $\text{conv}(K)$\\
+    \vspace{-0.4cm}
+    \begin{algorithmic}[1]
+    \State Simplify the problem by fixing variables which are at their bounds, and reduce to a smaller dimensional knapsack separation problem;
+    \State Formulate problem $LP_1$ in the reduced variable space without $(C1) - (C2)$;
+    \State Apply P1-P2 to simplify $LP_1$;
+    \State Solve $LP_1$ using the dynamic row generation algorithm;
+    \State If solving $LP_1$ reveals that $x^* \in \text{conv}(K)$ : STOP and return TRUE;
+    \State Let $(\hat{\pi}, \hat{\pi}_0)$ represent the optimal solution to $LP_1$;
+    \State Lift cut $\hat{\pi} x \leq \hat{\pi}_0$ to obtain a cut $\pi x \leq \pi_0$ which is valid for $K$;
+    \State STOP and return the cut $(\pi, \pi_0)$;
+    \end{algorithmic}
+    \end{algorithm}
 \end{frame}
 
 %------------------------------------------------
