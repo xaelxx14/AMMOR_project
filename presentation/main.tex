@@ -46,31 +46,35 @@ Yağmur Ergin}
 %------------------------------------------------
 
 \begin{frame}{Introduction}
-    \textbf{Mixed Integer Knapsack Set:} \\
-    \vspace{0.1cm}
-    Consider a positive integer $n$, $b \in \mathbb{Q}$, $a \in \mathbb{Q}^n$, $l \in \{\mathbb{Q} \cup \{-\infty\}\}^n$, $u \in \{\mathbb{Q} \cup \{+\infty\}\}^n$ and $I \subseteq N := \{1, \ldots, n\}$
-    \vspace{0.1cm}
-    \[
-    K = \{x \in \mathbb{R}^n : ax \leq b, l \leq x \leq u, x_i \in \mathbb{Z}, \forall i \in I \}
-    \]
-    Given a point $x^* \in \mathbb{Q}^n$
-    \begin{itemize}
-        \item Identify an inequality ($\pi x \leq \pi_0$) valid for conv$(K)$ and violated by $x^*$.
-        \item Prove that no such inequality exists.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Introduction}
-    \textbf{Mixed Integer Set :} \\
-    \[
-    P = \{x \in \mathbb{R}^n : Dx \leq d, l \leq x \leq u, x_i \in \mathbb{Z}, \forall i \in I \}
-    \]
-    \vspace{0.2cm}
-    where $D$ is an $m \times n$ matrix, and $d \in \mathbb{Q}^n$.\\
-    If $(a, b)$ can be obtained as a non-negative linear combination of rows from $(D, d)$, then $P \subseteq K$ 
-    and we say that $K$ is an implied knapsack set of $P$. 
-    % If this is the case, any inequality which is valid for $K$ will also be valid for $P$ and we 
-    % henceforth call it knapsack inequality or knapsack cut of $P$.
+    \vspace{-0.2cm}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Mixed Integer Knapsack Set :} \\
+            \small
+            Consider a positive integer $n$, $b \in \mathbb{Q}$, $a \in \mathbb{Q}^n$, $l \in \{\mathbb{Q} \cup \{-\infty\}\}^n$, $u \in \{\mathbb{Q} \cup \{+\infty\}\}^n$ and $I \subseteq N := \{1, \ldots, n\}$
+            \[
+            K = \{x \in \mathbb{R}^n : ax \leq b, l \leq x \leq u, x_i \in \mathbb{Z}, \forall i \in I \}
+            \]
+            Given a point $x^* \in \mathbb{Q}^n$
+            \begin{itemize}
+                \item Identify an inequality ($\pi x \leq \pi_0$) valid for conv$(K)$ and violated by $x^*$.
+                \item Prove that no such inequality exists.
+            \end{itemize}
+        \end{column}
+        \hspace{0.5cm}
+        \begin{column}{0.48\textwidth}
+            \textbf{Mixed Integer Set : } \\
+            \vspace{-0.4cm}
+            \small
+            \[
+            P = \{x \in \mathbb{R}^n : Dx \leq d, l \leq x \leq u, x_i \in \mathbb{Z}, \forall i \in I \}
+            \]
+            $D$ is an $m \times n$ matrix, and $d \in \mathbb{Q}^n$\\
+            \vspace{0.3cm}
+            If $(a, b)$ can be obtained as a non-negative linear combination of rows from $(D, d)$, then $P \subseteq K$ 
+            and we say that $K$ is an implied knapsack set of $P$. 
+        \end{column}
+    \end{columns}
 \end{frame}
 %------------------------------------------------
 \section{Identifying a Violated Knapsack Cut}
