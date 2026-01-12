@@ -116,11 +116,6 @@ Yağmur Ergin}
     \end{algorithm}
 \end{frame}
 
-%------------------------------------------------
-\section{Solving the Mixed Integer Knapsack Problem}
-%------------------------------------------------
-
-
 %%%%%%%%%%%%%%% Guillem
 
 \subsection{Reducing the problem}
@@ -187,15 +182,130 @@ Yağmur Ergin}
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tudor
+%------------------------------------------------
+\section{Solving the Mixed Integer Knapsack Problem}
 
-\subsection{B}
-\begin{frame}{1}
-    \begin{itemize}
-        \item a
-        \item b
-    \end{itemize}
+\begin{frame}{Detecting Unbounded MIKP}
+    \begin{block}{Conditions for Unboundedness}
+        An MIKP instance is unbounded if and only if one of the following holds (checkable in $O(n)$ time):
+        \begin{itemize}
+            \item \textbf{Condition A (Single Variable):} There exists an index $i$ such that:
+            \[ a_i \leq 0, \quad c_i > 0, \quad \text{and} \quad u_i = +\infty \]
+            
+            \item \textbf{Condition B (Pairwise):} There exist indices $i, j$ such that $e_i > e_j$ and:
+            \[
+            (a_i > 0, c_i > 0, u_i = +\infty) \quad \text{and} \quad (a_j < 0, c_j \leq 0, u_j = +\infty)
+            \]
+        \end{itemize}
+    \end{block}
 \end{frame}
+
+\begin{frame}{Preprocessing: Definitions}
+    \begin{center}
+        Let $N^+ = \{i : a_i > 0\}$ and $N^- = \{i : a_i < 0\}$.
+        
+        \vspace{0.3cm}
+        
+        \Large
+        \[
+        L_{min} = \sum_{i \in N^-} a_i u_i + \sum_{i \in N^+} a_i l_i
+        \]
+        
+        \vspace{0.1cm}
+        
+        \[
+        L_{max} = \sum_{i \in N^-} a_i l_i + \sum_{i \in N^+} a_i u_i
+        \]
+    \end{center}
+\end{frame}
+
+\begin{frame}{Preprocessing: 8 Steps}
+    \small
+    \setlength{\itemsep}{0.5pt} % Reduce vertical space between items
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{enumerate}
+                \item \textbf{Detect Infeasibility:} \\
+                If $L_{min} > b$ or if any $l_i > u_i$.
+                
+                \item \textbf{Detect Unboundedness:} \\
+                Apply the $O(n)$ check from previous slide.
+                
+                \item \textbf{Fix Variables:} \\
+                Fix $x_i = u_i$ if $c_i \geq 0, a_i \leq 0$. \\
+                Fix $x_i = l_i$ if $c_i \leq 0, a_i \geq 0$.
+                
+                \item \textbf{Tighten Upper Bounds:} \\
+                Update $u_i$ using knapsack capacity and $L_{min}$.
+            \end{enumerate}
+        \end{column}
+        \hspace{0.2cm} % Reduced horizontal space
+        \begin{column}{0.48\textwidth}
+            \begin{enumerate}
+                \setcounter{enumi}{4}
+                \item \textbf{Tighten Lower Bounds:} \\
+                Update $l_i$ using knapsack capacity and $L_{min}$.
+                
+                \item \textbf{Sort Variables:} \\
+                Sort by decreasing efficiency $e_i = c_i/a_i$. \\
+                (Break ties: Integers before Continuous).
+                
+                \item \textbf{Aggregate Integers:} \\
+                Merge integer variables with identical $a_i, c_i$.
+                
+                \item \textbf{Aggregate Continuous:} \\
+                Merge continuous variables with same efficiency $e_i$ and sign of $a_i$.
+            \end{enumerate}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Domination: Definitions}
+    \begin{block}{Cost-Domination}
+        $x^1$ \textbf{cost-dominates} $x^2$ if:
+        \[ cx^1 > cx^2 \quad \text{and} \quad ax^1 \leq ax^2 \]
+    \end{block}
+
+    \vspace{0.5cm}
+
+    \begin{block}{Lexicographic-Domination}
+        $x^1$ \textbf{lexicographically-dominates} $x^2$ if $cx^1 = cx^2$, $ax^1 < ax^2$, and $x^1$ is lexicographically smaller than $x^2$ (at the first different index $i$, $x^1_i < x^2_i$).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Domination: Integer Variables (Tuples)}
+    \small
+    \begin{block}{Domination Tuple $(i, j, k_i, k_j)$}
+        Integers $k_i, k_j$ form a tuple if swapping $k_j$ items of $j$ for $k_i$ items of $i$ improves the solution:
+        \[ a_i k_i + a_j k_j \geq 0 \quad \text{and} \quad c_i k_i + c_j k_j < 0 \]
+    \end{block}
+
+    \vspace{0.1cm}
+
+    \begin{block}{Theorem 1 (Pruning Rule)}
+        If such a tuple exists and in the current node $l_i + k_i \leq x_i \leq u_i + k_i$, we can impose a bound on $x_j$ without losing optimal solutions:
+        \begin{itemize}
+            \item If $k_j > 0$: Impose $x_j \leq l_j + k_j - 1$
+            \item If $k_j < 0$: Impose $x_j \geq u_j + k_j + 1$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Domination: Mixed Variables}
+    \small
+    \begin{block}{Proposition 7 \& 8 (Intuition)}
+        If we have a more efficient integer variable $x_i$ available ($e_k < e_i$), we should prioritize it over a less efficient continuous variable $x_k$.
+    \end{block}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Branching Implication:}
+    If $x_i \leq u_i - 1$ (integer variable not full) and $e_k < e_i$, we can fix continuous variables $j$ that are "worse" than $k$:
+    \[ x_j = l_j \quad \forall j \in C_{f+1,n} \]
+    This forces the solver to use the efficient integer item $x_i$ before filling the knapsack with inefficient continuous items.
+\end{frame}
+
 %------------------------------------------------
 %Leonard
 \section{Computational Results}
