@@ -196,7 +196,96 @@ Yağmur Ergin}
         \item b
     \end{itemize}
 \end{frame}
+%------------------------------------------------
+%Leonard
+\section{Computational Results}
 
+\begin{frame}{Experimental Setup}
+The computational results are based on \textbf{67 instances} of the knapsack problem.
+
+\begin{itemize}
+    \item These instances are selected from an initial set of approximately \textbf{130,000 instances}.
+    \item Most of the instances are similar; therefore, only the \textbf{latest (supposedly hardest)} instance of each group is kept.
+    \item The \textbf{easiest instances} (solved in less than 1 second) are removed.
+\end{itemize}
+
+\medskip
+Removing very easy instances reduces sensitivity to small time variations and avoids bias in performance comparisons.
+\end{frame}
+
+\begin{frame}{Limitations of the Instance Selection}
+Despite the above filtering, using only \textbf{67 instances} may appear insufficient for a robust comparison.
+
+\begin{itemize}
+    \item The original 130,000 instances are drawn from \textbf{MIPLIB}.
+    \item The selection process is not fully described, making the results \textbf{non-reproducible}.
+    \item Fortunately, the authors make the full set of instances \textbf{available upon request}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analysis of the Performance Graph}
+The performance graph is difficult to read but provides valuable information.
+
+\begin{itemize}
+    \item It shows which solver performs best on a given \textbf{percentage of instances}.
+    \item This provides a notion of \textbf{average dominance or “betterness”}.
+    \item The curve also indicates the percentage of instances for which a solver is more than $x$ times slower than another.
+\end{itemize}
+
+Overall, it is an effective way to compare solvers across multiple instances.
+\end{frame}
+
+\begin{frame}{Discussion and Limitations}
+While this approach is useful, it has some limitations.
+
+\begin{itemize}
+    \item As more solvers are added, the graph becomes harder to interpret.
+    \item The use of an \textbf{OR condition on the y-axis} leads to information loss.
+\end{itemize}
+
+Thus, although informative, the visualization does not scale well with an increasing number of solvers.
+\end{frame}
+
+\begin{frame}{Results}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure1}
+    \caption{Performance comparison of solvers on knapsack instances}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Comparative Analysis}
+The comparison highlights the strong performance of the proposed algorithm, \textbf{KBB}.
+
+\begin{itemize}
+    \item KBB improves rapidly along the performance graph $\implies$ no instances inherently hard for the algorithm
+    \item It is \textbf{never more than 1000 times slower} than any competing solver on any instance.
+    \item KBB performs best on approximately \textbf{77\% of the instances}.
+    \item There are \textbf{two instances} that could not be solved by either \textbf{CPX} or \textbf{CPP}, while \textbf{KBB} successfully solved them.
+\end{itemize}
+
+Overall, these results indicate both robustness and competitive efficiency of KBB.
+\end{frame}
+
+\begin{frame}{Enhancement results}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure2}
+    \caption{Performance comparison of enhancement induced by domination branching or reduced-cost bound improvement}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Enhancement Analysis}
+
+
+\begin{itemize}
+    \item When applied independently, the enhancements do not reduce the search space and may even slow down the algorithm.
+    \item When combined, however, they lead to a \textbf{significant performance improvement}.
+    \item These two features naturally complement each other.
+    \item Updating bounds enables additional domination conditions to be applied.
+    \item This interaction results in \textbf{further pruning of the search tree}.
+\end{itemize}
+\end{frame}
 %------------------------------------------------
 \section{Conclusion}
 %------------------------------------------------
