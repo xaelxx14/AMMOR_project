@@ -30,6 +30,12 @@ Léonard Bultinck,
 Tudor Cardas,
 Yağmur Ergin}
 \date{\today} % Date, can be changed to a custom date
+
+\institute{
+    \vspace{0.5cm}
+    \small Based on the paper \textit{On the Exact Separation of Mixed Integer Knapsack Cuts} \cite{cuts2007exact} by \textbf{Ricardo Fukasawa, Marcos Goycoolea}.
+
+}
 %----------------------------------------------------------------------------------------
 %    PRESENTATION SLIDES
 %----------------------------------------------------------------------------------------
@@ -46,6 +52,7 @@ Yağmur Ergin}
     		\item Léonard Bultinck : Numercial results and interpretation
     	\end{itemize}
     \end{block}
+    \vspace{0.5cm}
 \end{frame}
 
 %------------------------------------------------
@@ -87,8 +94,10 @@ Yağmur Ergin}
 
 \begin{frame}{Is $x^* \in \text{conv}(K)$?}
 	\vspace{-0.4cm}
-	\textbf{Suggestion:} Solve the following linear program to solve the separation problem:
+    \textbf{Suggestion:} Solve the following linear program to address the separation problem:\\
+    Let $\{x_1, x_2, \ldots, x_q\}$ and $\{r_1, r_2, \ldots, r_t\}$ represent the extreme points and rays of $\text{conv}(K)$.
 	\vspace{-0.4cm}
+    \small
 	\begin{align*}
 		LP_1 : \min \quad & \sum_{i=1}^{n} (u_i + v_i) \\
 		\text{s.t.} \quad & \pi x^k - \pi_0 \leq 0 & \forall k = 1, \ldots, q & \quad \text{(C1)} \\
@@ -99,7 +108,7 @@ Yağmur Ergin}
 	\end{align*}
 	\vspace{-0.1cm}
 	If $LP_1$ is infeasible, then $x^* \in \text{conv}(K)$.\\ 
-	Otherwise, the optimal solution $(u, v, \pi, \pi_0)$ gives a valid knapsack cut $\pi x \leq \pi_0$.
+	Otherwise, the optimal solution $(u, v, \pi, \pi_0)$ gives a valid knapsack cut $\pi x \leq \pi_0$ \cite{applegate2001tsp}.
 \end{frame}
 
 \begin{frame}{Algorithm}
@@ -392,11 +401,19 @@ Thus, although informative, the visualization does not scale well with an increa
 \end{frame}
 
 \begin{frame}{Results}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figure1}
-    \caption{Performance comparison of solvers on knapsack instances}
-\end{figure}
+\begin{columns}[T]
+    \begin{column}{0.80\textwidth}
+        \begin{figure}
+            \vspace{-0.7cm}
+
+            \centering
+            \includegraphics[width=0.70\textwidth]{figure1}
+            \caption{Performance comparison of solvers on knapsack instances}
+        \end{figure}
+    \end{column}
+    \begin{column}{0.20\textwidth}
+    \end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Comparative Analysis}
@@ -413,11 +430,19 @@ Overall, these results indicate both robustness and competitive efficiency of KB
 \end{frame}
 
 \begin{frame}{Enhancement results}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figure2}
-    \caption{Performance comparison of enhancement induced by domination branching or reduced-cost bound improvement}
-\end{figure}
+\begin{columns}[T]
+    \begin{column}{0.80\textwidth}
+        \begin{figure}
+            \centering
+            \vspace{-0.7cm}
+            \includegraphics[width=0.70\textwidth]{figure2}
+            \caption{Performance comparison of enhancement induced by domination branching or reduced-cost bound improvement}
+        \end{figure}
+    \end{column}
+    \begin{column}{0.20\textwidth}
+    \end{column}
+\end{columns}
+\
 \end{frame}
 
 \begin{frame}{Enhancement Analysis}
@@ -432,28 +457,14 @@ Overall, these results indicate both robustness and competitive efficiency of KB
 \end{itemize}
 \end{frame}
 %------------------------------------------------
-\section{Conclusion}
-%------------------------------------------------
 
-\begin{frame}{Conclusion}
-    blablabla
-\end{frame}
-
-%------------------------------------------------
 \begin{frame}{References}
-%------------------------------------------------
-
     \tiny
+    \setbeamertemplate{bibliography item}{} % Remove the icon/emoji
     \begin{multicols}{2} 
         \printbibliography[heading=none]
     \end{multicols}
 \end{frame}
-
-%------------------------------------------------
-\begin{frame}
-    \Huge{\centerline{\textbf{Questions?}}}
-\end{frame}
-
 %----------------------------------------------------------------------------------------
 
 \end{document}
